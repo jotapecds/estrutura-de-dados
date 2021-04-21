@@ -5,24 +5,93 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int bubble_sort (int vet[], int tam);
-int merge_sort(int vet[], int esq, int dir);
-int merge(int vet[], int esq, int meio, int dir);
-int quick_sort(int *a, int inicio, int fim);
-int particionar(int *a, int inicio, int final);
+int bubble_sort (int vet[], int tam){
+    if(vet == NULL || tam <= 0)
+        return 1;
 
-int main(int argc, char *argv[]) {
+    int aux;
+
+    for (int i = 1; i < tam; i++){
+        for (int j = 0; j < tam - i; j++){
+            if (vet[j] > vet[j + 1]){
+                aux = vet[j];
+                vet[j] = vet[j + 1];
+                vet[j + 1] = aux;
+            }
+        }
+    }
+    return 0;
+}
+
+int merge(int vet[], int esq, int meio, int dir){
+    if(vet == NULL || meio < 0)
+        return 1;
+
+    int i = esq,
+        j = meio,
+        k = 0,
+        tam = dir - esq;
+
+    int *aux = (int*) malloc(tam * sizeof(int));
+
+    while(i < meio && j < dir){
+        if(vet[i] <= vet[j])
+            aux[k++] = vet[i++];
+        else
+            aux[k++] = vet[j++];
+    }
+
+    while(i < meio)
+        aux[k++] = vet[i++];
+
+    while(j < dir)
+        aux[k++] = vet[j++];
+
+    for (i = esq; i < dir; ++i)
+        vet[i] = aux[i-esq];
+
+    free(aux);
+
+    return 0;
+}
+
+int merge_sort(int vet[], int esq, int dir){
+    if(vet == NULL || esq <= 0 || dir < 0)
+        return 1;
+
+    int meio;
+    if (esq < dir - 1){
+        meio = (esq + dir) / 2;
+
+        merge_sort(vet, esq, meio);
+        merge_sort(vet, meio, dir);
+
+        merge(vet, esq, meio, dir);
+    }
+    return 0;
+}
+
+void particionar(int *a, int inicio, int final){
+
+}
+
+int quick_sort(int *a, int inicio, int fim){
+    printf("\n> EXECUTANDO QUICK SORT <\n");
+    return 1;
+}
+
+int main(int argc, char *argv[]){
 
     int tam_total_vet = 10000,
         tam_atual_vet = 0,
         linha,
-
         *vet = (int *) malloc(tam_total_vet * sizeof(int));
 
-    if(vet == NULL) {
+    if(vet == NULL){   
         printf("Erro! Memoria insuficiente");
-         return 0;
+        return 0;
     }
 
     while (scanf("%d", &linha) == 1){
@@ -31,16 +100,22 @@ int main(int argc, char *argv[]) {
     }
 
     if(argc == 1){
-        if(!bubble_sort(vet, tam_atual_vet))
+        if(bubble_sort(vet, tam_atual_vet) == 1){
             printf("Erro!");
+            return 0;
+        }
     }
     else if(strcmp(argv[1], "-m") == 0){
-        if(!merge_sort(vet, tam_atual_vet))
+        if(merge_sort(vet, 0, tam_atual_vet) == 1){
             printf("Erro!");
+            return 0;
+        }
     }
     else if(strcmp(argv[1], "-q") == 0){
-        if(!quick_sort(vet, tam_atual_vet))
+        if(quick_sort(vet, 0, tam_atual_vet) == 1){
             printf("Erro!");
+            return 0;
+        }
     }
 
     for(int i = 0; i < tam_atual_vet; i++){
