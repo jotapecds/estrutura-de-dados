@@ -1,6 +1,6 @@
 /**
-* $ gcc -o ordena ordena.c -Wall
-* $ ./ordena < 1.in
+* Aluno: João Pedro Coelho de Souza
+* DRE 119152051 
 */
 
 #include <stdio.h>
@@ -8,7 +8,7 @@
 #include <string.h>
 
 int bubble_sort (int vet[], int tam){
-    if(vet == NULL || tam <= 0)
+    if(vet == NULL || tam < 0)
         return 1;
 
     int aux;
@@ -26,9 +26,6 @@ int bubble_sort (int vet[], int tam){
 }
 
 int merge(int vet[], int esq, int meio, int dir){
-    if(vet == NULL || meio < 0)
-        return 1;
-
     int i = esq,
         j = meio,
         k = 0,
@@ -58,7 +55,7 @@ int merge(int vet[], int esq, int meio, int dir){
 }
 
 int merge_sort(int vet[], int esq, int dir){
-    if(vet == NULL || esq <= 0 || dir < 0)
+    if(vet == NULL || esq < 0 || dir < 0)
         return 1;
 
     int meio;
@@ -73,13 +70,39 @@ int merge_sort(int vet[], int esq, int dir){
     return 0;
 }
 
-void particionar(int *a, int inicio, int final){
+int partition(int vet[], int ini, int fim){
+    int pivot = vet[fim],
+        i = ini,
+        aux;
 
+    for(int j = ini; j < fim; j++){
+        if(vet[j] <= pivot){
+            aux = vet[j];
+            vet[j] = vet[i];
+            vet[i] = aux;
+            i++;
+        }
+    }
+
+    aux = vet[i];
+    vet[i] = vet[fim];
+    vet[fim] = aux;
+
+    return i;
 }
 
-int quick_sort(int *a, int inicio, int fim){
-    printf("\n> EXECUTANDO QUICK SORT <\n");
-    return 1;
+int quick_sort(int vet[], int ini, int fim){
+    if(vet == NULL || ini < 0 || fim < 0)   
+        return 1;
+
+    int pivot;
+    if(fim > ini){
+        pivot = partition(vet, ini, fim - 1);
+        quick_sort(vet, ini, pivot - 1);
+        quick_sort(vet, pivot + 1, fim);
+    }
+
+    return 0;
 }
 
 int main(int argc, char *argv[]){
