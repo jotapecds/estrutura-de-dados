@@ -1,175 +1,56 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct Node;
-typedef struct Node *PNode;
-struct Node
+struct Element
 {
-    int info;
-    PNode link;
+    int value;
+    struct Element* next;
     int team_index;
-};
-struct LinkQueue
-{
-    int num_of_team;
-    PNode f;
-    PNode r;
-    PNode *index;
-};
-typedef struct LinkQueue *PLinkQueue;
+} typedef element_t;
 
-PLinkQueue create (int n)
-{
-    PLinkQueue plqu;
-    plqu = (PLinkQueue)malloc(sizeof(struct LinkQueue));
-    plqu->f = NULL;
-    plqu->r = NULL;
-    plqu->num_of_team = n;
-    plqu->index = (PNode *)malloc(sizeof(PNode)*n);
-    int i;
-    for (i=0;i<n;i++)
-    {
-        plqu->index[i] = NULL;
-    }
-    return plqu;
-}
-void Enqueue (PLinkQueue plqu, int x, int index)
-{
-    PNode p;
-    p = (PNode)malloc(sizeof(struct Node));
-    p->info = x;
-    p->team_index = index;
-    if (plqu->f == NULL)
-    {
-        p->link = NULL;
-        plqu->f = p;
-        plqu->r = p;
-        plqu->index[index] = p;
-    }
-    else 
-    {
-        if (plqu->index[index] == NULL)
-        {
-            plqu->r->link = p;
-            plqu->r = p;
-            p->link = NULL;
-            plqu->index[index] = p;
-        }
-        else
-        {
-            p->link = plqu->index[index]->link;
-            plqu->index[index]->link = p;
-            plqu->index[index] = p;
-        }
-    }
-}
-int Dequeue (PLinkQueue plqu)
-{
-    PNode p;
-    p = plqu->f;
-    if (plqu->f != NULL)
-    {
-        if (p->link == NULL)
-        {
-            plqu->f = NULL;
-            plqu->r = NULL;
-            int temp = p->info;
-            plqu->index[p->team_index] = NULL;
-            free (p);
-            return temp;
-        }
-        else
-        {
-            if (p->team_index == p->link->team_index)
-            {
-                plqu->f = p->link;
-                int temp = p->info;
-                free(p);
-                return temp;
-            }
-            else
-            {
-                plqu->index[p->team_index] = NULL;
-                plqu->f = p->link;
-                int temp = p->info;
-                free(p);
-                return temp;
-            }
-        }
-    }
-    else
-    {
-        return -1;
+void printList(element_t *head){
+    element_t* temp = head;
+
+    while(temp != NULL){
+        printf(" -> %d", temp->value);
+        temp = temp->next;    
     }
 }
 
-int main (void)
-{
-    int i,j;
-    int count = 1;
-    int t;//team的个数
-    int team[1001][1001];// 记录team的成员
-    int num[1001];//    记录每个team的成员数
-    char str[12];
-    printf("aaaa");
-    scanf ("%d", &t);
-    // while (t!= 0)
-    // {
-    //     printf ("Scenario #%d\n", count);
-    //     PLinkQueue teamqueue;
-    //     teamqueue = create(t);
-    //     for (i=0;i<t;i++)
-    //     {
-    //         scanf("%d", &num[i]);
-    //         for (j=0;j<num[i];j++)
-    //         {
-    //             scanf("%d", &team[i][j]);
-    //         }
-    //     }
-    // /*for (i=0;i<t;i++)
-    // {
-    //     for (j=0;j<num[i];j++)
-    //     {
-    //         printf("%d ", team[i][j]);
-    //     }
-    //     printf ("\n");
-    // }*/
-    //     scanf("%s", str);
-    //     while (strcmp(str, "STOP") != 0)
-    //     {
-    //         if (strcmp(str, "ENQUEUE") == 0)
-    //         {
-    //             int temp, ind, ibreak = 0;
-    //             scanf("%d", &temp);
-    //             for (i=0;i<t;i++)
-    //             {
-    //                 for (j=0;j<num[i];j++)
-    //                 {
-    //                     if (temp == team[i][j])
-    //                     {
-    //                         ind = i;
-    //                         ibreak = 1;
-    //                         break;
-    //                     }
-    //                 }
-    //                 if (ibreak) break;
-    //             }
-    //             Enqueue (teamqueue, temp, ind);
-    //         }
-    //         if (strcmp(str, "DEQUEUE") == 0)
-    //         {
-    //             int temp = Dequeue(teamqueue);
-    //             if (temp >= 0)
-    //             {
-    //                 printf("%d\n", temp);
-    //             }
-    //         }
-    //         scanf("%s", str);
-    //     }
-    //     printf ("\n");
-    //     count++;
-    //     scanf ("%d", &t);
+int main(void){
+
+    element_t *head, e1, e2, e3;
+
+    e1.value = 24;
+    e2.value = 10;
+    e3.value = 54;
+
+    head = &e3;
+    e3.next = &e2;
+    e2.next = &e1;
+    e1.next = NULL;
+
+    printList(head);
+
+
+    // int tam_total_vet = 10000,
+    //     tam_atual_vet = 0,
+    //     linha,
+    //     *vet = (int *) malloc(tam_total_vet * sizeof(int));
+
+    // if(vet == NULL){   
+    //     printf("Erro! Memoria insuficiente");
+    //     return 0;
+    // }
+
+    // while (scanf("%d", &linha) == 1){
+    //     vet[tam_atual_vet] = linha;
+    //     tam_atual_vet++;
+    // }
+
+    // for(int i=0; i<tam_atual_vet; i++){
+    //     printf("Linha %d -> %d \n", i, vet[i]);
     // }
 
     return 0;
