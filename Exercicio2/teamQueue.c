@@ -2,12 +2,62 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Element
-{
-    int value;
-    struct Element* next;
+struct Node {
+  int value;
+  struct Node *next;
+} typedef node_t;
+
+struct Queue {
+  node_t *head; 
+  node_t *tail;
+} typedef queue_t;
+
+struct Team {
     int team_index;
-} typedef element_t;
+    int num_elements;
+    int* elements;
+} typedef team_t;
+
+node_t* create_new_node(int value) {
+  node_t *new_node = (node_t*) malloc(sizeof(node_t));
+  new_node->value = value;
+  new_node->next = NULL;
+  return new_node;
+}
+
+queue_t* create_new_queue(){
+    queue_t *new_queue = (queue_t*) malloc(sizeof(queue_t));
+    new_queue->head = new_queue->tail = NULL;
+    return new_queue;
+}
+
+void enqueue(queue_t* queue, int value){
+    node_t *temp = create_new_node(value);
+  
+    // Se a fila estiver vazia, o elemento inserido será tanto o primeiro quanto o último da fila
+    if (queue->tail == NULL) {
+        queue->head = queue->tail = temp;
+        return;
+    }
+  
+    // Caso contrário, a cauda atual passa a apontar para a nova cauda
+    queue->tail->next = temp;
+    queue->tail = temp;
+}
+
+void dequeue(queue_t* queue){
+    if (queue->head == NULL) return;
+  
+    // Armazena a cabeça atual e move a fila um nó para frente
+    node_t* temp = queue->head;
+    queue->head = queue->head->next;
+  
+    // Caso a nova cabeça seja nula, significa que a fila está vazia
+    if (queue->head == NULL)
+        queue->tail = NULL;
+  
+    free(temp);
+}
 
 void printList(element_t *head){
     element_t* temp = head;
